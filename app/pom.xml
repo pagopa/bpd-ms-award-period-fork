@@ -6,25 +6,16 @@
     <groupId>it.gov.pagopa.bpd.ms</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-
     <groupId>it.gov.pagopa.bpd.ms.award_period</groupId>
     <artifactId>bpd-ms-award-period-app</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <dependencies>
         <dependency>
             <groupId>it.gov.pagopa.bpd.ms.award_period.api</groupId>
             <artifactId>bpd-ms-award-period-api-rest</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>it.gov.pagopa.bpd.ms.award_period.api</groupId>-->
-        <!--            <artifactId>bpd-ms-award-period-app-api-listener</artifactId>-->
-        <!--            <version>${symbol_dollar}{bpd.award-period.version}</version>-->
-        <!--            <scope>runtime</scope>-->
-        <!--        </dependency>-->
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

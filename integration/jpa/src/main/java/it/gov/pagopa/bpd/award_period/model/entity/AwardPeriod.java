@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Data
@@ -22,7 +21,7 @@ public class AwardPeriod extends BaseEntity implements Serializable {
 
     @Id
     @Column(name = "award_period_id")
-    private int awardPeriodId;
+    private Long awardPeriodId;
 
     @Column(name = "aw_period_start_d")
     private LocalDate startDate;

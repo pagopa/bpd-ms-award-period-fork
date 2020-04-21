@@ -6,6 +6,7 @@ import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -14,14 +15,20 @@ class AwardPeriodServiceImpl extends BaseService implements AwardPeriodService {
 
     private final AwardPeriodDAO awardPeriodDAO;
 
+
     @Autowired
     public AwardPeriodServiceImpl(AwardPeriodDAO awardPeriodDAO) {
         this.awardPeriodDAO = awardPeriodDAO;
     }
 
     @Override
-    public Optional<AwardPeriod> find(int awardPeriodId) {
+    public Optional<AwardPeriod> find(Long awardPeriodId) {
         return awardPeriodDAO.findById(awardPeriodId);
+    }
+
+    @Override
+    public List<AwardPeriod> findAll() {
+        return awardPeriodDAO.findAll();
     }
 
 }

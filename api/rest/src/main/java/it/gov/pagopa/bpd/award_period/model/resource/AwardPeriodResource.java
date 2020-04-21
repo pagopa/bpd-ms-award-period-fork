@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = "awardPeriodId", callSuper = false)
 public class AwardPeriodResource {
 
-    private int awardPeriodId;
+    private Long awardPeriodId;
     private LocalDate startDate;
     private LocalDate endDate;
 
