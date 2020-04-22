@@ -4,8 +4,10 @@ import eu.sia.meda.service.BaseService;
 import it.gov.pagopa.bpd.award_period.AwardPeriodDAO;
 import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,11 @@ class AwardPeriodServiceImpl extends BaseService implements AwardPeriodService {
 
     private final AwardPeriodDAO awardPeriodDAO;
 
+
+    static <S extends AwardPeriod> Specification<S> isOffsetDateTimeSpecified(LocalDate offsetDate) {
+        return (awardPeriod, cq, cb) ->
+                cb.between(cb.literal(offsetDate), awardPeriod.get("startDate"), awardPeriod.get("endDate"));
+    }
 
     @Autowired
     public AwardPeriodServiceImpl(AwardPeriodDAO awardPeriodDAO) {
@@ -26,9 +33,11 @@ class AwardPeriodServiceImpl extends BaseService implements AwardPeriodService {
         return awardPeriodDAO.findById(awardPeriodId);
     }
 
+
     @Override
-    public List<AwardPeriod> findAll() {
-        return awardPeriodDAO.findAll();
+    public List<AwardPeriod> findAll(LocalDate offsetDate) {
+        return offsetDate == null ?
+                awardPeriodDAO.findAll() : awardPeriodDAO.findAll(isOffsetDateTimeSpecified(offsetDate));
     }
 
 }

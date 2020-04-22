@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -48,10 +50,15 @@ class BpdAwardPeriodControllerImpl extends StatelessController implements BpdAwa
     }
 
     @Override
-    public List<AwardPeriodResource> findAll() {
+    public List<AwardPeriodResource> findAll(OffsetDateTime offsetDateTime) {
         logger.debug("Start findAll awardPeriod");
 
-        List<AwardPeriod> awardPeriods = awardPeriodService.findAll();
+        LocalDate offsetDate = null;
+        if (offsetDateTime != null) {
+            offsetDate = offsetDateTime.toLocalDate();
+        }
+
+        List<AwardPeriod> awardPeriods = awardPeriodService.findAll(offsetDate);
         return awardPeriods.stream()
                 .map(awardPeriodResourceAssembler::toResource)
                 .collect(Collectors.toList());

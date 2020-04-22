@@ -10,6 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -19,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-
+//TODO Ricontrollare copertura dei diversi casi di test
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = AwardPeriodServiceImpl.class)
 public class AwardPeriodServiceImplTest {
@@ -40,13 +42,19 @@ public class AwardPeriodServiceImplTest {
                     return result;
                 });
 
+        when(awardPeriodDAOMock.findAll())
+                .thenAnswer(invocation -> {
+                    final List<AwardPeriod> results = new ArrayList<AwardPeriod>();
+                    results.stream().forEach(awperiod -> awperiod.setEnabled(true));
+                    return results;
+                });
+
     }
 
 
     @Test
-    public void findById() {
+    public void find() {
         Long awardPeriodId = new Random().nextLong();
-        ;
 
         final Optional<AwardPeriod> found = awardPeriodService.find(awardPeriodId);
 
@@ -54,6 +62,18 @@ public class AwardPeriodServiceImplTest {
         verify(awardPeriodDAOMock, times(1)).findById(eq(awardPeriodId));
         assertEquals(awardPeriodId, found.get().getAwardPeriodId());
         assertNotNull(found.get().getAwardPeriodId());
+    }
+
+    @Test
+    public void findAll() {
+
+        final List<AwardPeriod> founds = awardPeriodService.findAll(null);
+
+        verify(awardPeriodDAOMock, only()).findAll();
+        verify(awardPeriodDAOMock, times(1)).findAll();
+        founds.stream().forEach(awardPeriod -> assertEquals(awardPeriod.getEnabled(), true));
+        assertNotNull(founds);
+
     }
 
 

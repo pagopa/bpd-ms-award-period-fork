@@ -2,15 +2,14 @@ package it.gov.pagopa.bpd.award_period.controller;
 
 import io.swagger.annotations.Api;
 import it.gov.pagopa.bpd.award_period.model.resource.AwardPeriodResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Api(tags = "Bonus Pagamenti Digitali award-period Controller")
@@ -23,6 +22,7 @@ public interface BpdAwardPeriodController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    List<AwardPeriodResource> findAll();
+    List<AwardPeriodResource> findAll(@RequestParam(value = "offsetDateTime", required = false)
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime offsetDateTime);
 
 }
