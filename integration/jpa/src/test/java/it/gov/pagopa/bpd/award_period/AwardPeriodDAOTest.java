@@ -1,7 +1,6 @@
-package it.gov.pagopa.bpd.award_period.connector;
+package it.gov.pagopa.bpd.award_period;
 
 import eu.sia.meda.layers.connector.query.CriteriaQuery;
-import it.gov.pagopa.bpd.award_period.AwardPeriodDAO;
 import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 import it.gov.pagopa.bpd.common.BaseCrudJpaDAOTest;
 import lombok.Data;
@@ -40,6 +39,14 @@ public class AwardPeriodDAOTest extends BaseCrudJpaDAOTest<AwardPeriodDAO, Award
     @Override
     protected void alterEntityToUpdate(AwardPeriod entity) {
         entity.setUpdateUser("userUpdate");
+    }
+
+    @Override
+    protected String getIdName() {
+        if (org.springframework.util.ReflectionUtils.findField(entityClass, "awardPeriodId") == null) {
+            throw new IllegalStateException("The entity has not a field named 'awardPeriodId'. Please override getIdName method inside the test!");
+        }
+        return "awardPeriodId";
     }
 
     /**

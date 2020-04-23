@@ -4,11 +4,9 @@ import it.gov.pagopa.bpd.common.model.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -17,9 +15,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"awardPeriodId"}, callSuper = false)
 @Table(name = "bpd_award_period")
+@Where(clause = "ENABLED_B = 'TRUE'")
 public class AwardPeriod extends BaseEntity implements Serializable {
 
     @Id
+    @SequenceGenerator(name = "id", sequenceName = "bpd_award_period_award_period_id_seq", allocationSize = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id")
     @Column(name = "award_period_id")
     private Long awardPeriodId;
 

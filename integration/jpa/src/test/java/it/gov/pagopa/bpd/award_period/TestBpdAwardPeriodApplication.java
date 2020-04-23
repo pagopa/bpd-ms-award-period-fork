@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.award_period.connector;
+package it.gov.pagopa.bpd.award_period;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
