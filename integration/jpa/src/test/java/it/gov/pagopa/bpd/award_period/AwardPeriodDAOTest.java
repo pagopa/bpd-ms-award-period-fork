@@ -44,7 +44,8 @@ public class AwardPeriodDAOTest extends BaseCrudJpaDAOTest<AwardPeriodDAO, Award
     @Override
     protected String getIdName() {
         if (org.springframework.util.ReflectionUtils.findField(entityClass, "awardPeriodId") == null) {
-            throw new IllegalStateException("The entity has not a field named 'awardPeriodId'. Please override getIdName method inside the test!");
+            throw new IllegalStateException("The entity has not a field named 'awardPeriodId'. " +
+                    "Please override getIdName method inside the test!");
         }
         return "awardPeriodId";
     }

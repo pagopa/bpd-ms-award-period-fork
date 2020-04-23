@@ -10,6 +10,7 @@ import it.gov.pagopa.bpd.award_period.model.resource.AwardPeriodResource;
 import it.gov.pagopa.bpd.award_period.service.AwardPeriodService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +47,7 @@ public class BpdAwardPeriodControllerImplTest {
     @Autowired
     protected MockMvc mvc;
     protected ObjectMapper objectMapper = new ArchConfiguration().objectMapper();
-    //TODO Ricontrollare copertura dei diversi casi di test
+
     LocalDate CURRENT_DATE = LocalDate.now(ZoneOffset.UTC);
     @MockBean
     private AwardPeriodService awardPeriodServiceMock;
@@ -66,7 +67,7 @@ public class BpdAwardPeriodControllerImplTest {
         awardPeriodList.add(awardPeriod);
 
         doReturn(foundAwardPeriod).when(awardPeriodServiceMock).find(eq(0L));
-        doReturn(awardPeriodList).when(awardPeriodServiceMock).findAll(CURRENT_DATE);
+        doReturn(awardPeriodList).when(awardPeriodServiceMock).findAll(Mockito.any());
 
     }
 
@@ -83,6 +84,18 @@ public class BpdAwardPeriodControllerImplTest {
         assertNotNull(awardPeriodResource);
         verify(awardPeriodServiceMock).find(eq(0L));
         verify(awardPeriodResourceAssemblerMock).toResource(any(AwardPeriod.class));
+    }
+
+    @Test
+    public void find_nullCase() throws Exception {
+        MvcResult result = (MvcResult) mvc.perform(MockMvcRequestBuilders
+                .get("/bpd/award-periods/null")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andReturn();
+
+        Mockito.verifyZeroInteractions(awardPeriodServiceMock, awardPeriodResourceAssemblerMock);
     }
 
     @Test

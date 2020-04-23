@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public interface BpdAwardPeriodController {
 
     @GetMapping(value = "/{awardPeriodId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    AwardPeriodResource find(@PathVariable("awardPeriodId") @Valid @NotBlank Long awardPeriodId);
+    AwardPeriodResource find(@PathVariable("awardPeriodId") @NotNull Long awardPeriodId);
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
