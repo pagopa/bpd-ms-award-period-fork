@@ -21,7 +21,7 @@ public class AwardPeriod extends BaseEntity implements Serializable {
     @Id
     @SequenceGenerator(name = "id", sequenceName = "bpd_award_period_award_period_id_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id")
-    @Column(name = "award_period_id")
+    @Column(name = "award_period_id_n")
     private Long awardPeriodId;
 
     @Column(name = "aw_period_start_d")

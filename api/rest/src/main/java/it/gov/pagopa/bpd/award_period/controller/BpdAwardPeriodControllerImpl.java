@@ -6,17 +6,16 @@ import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 import it.gov.pagopa.bpd.award_period.model.resource.AwardPeriodResource;
 import it.gov.pagopa.bpd.award_period.service.AwardPeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @See BpdAwardPeriodController
+ */
 @RestController
 class BpdAwardPeriodControllerImpl extends StatelessController implements BpdAwardPeriodController {
 
@@ -36,17 +35,8 @@ class BpdAwardPeriodControllerImpl extends StatelessController implements BpdAwa
             logger.debug("awardPeriodId = [" + awardPeriodId + "]");
         }
 
-        try {
-            final Optional<AwardPeriod> awardPeriod = awardPeriodService.find(awardPeriodId);
-            return awardPeriodResourceAssembler.toResource(awardPeriod.get());
-        } catch (
-                NoSuchElementException e) {
-            if (logger.isErrorEnabled()) {
-                logger.error(e.getMessage(), e);
-            }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
+        final AwardPeriod awardPeriod = awardPeriodService.find(awardPeriodId);
+        return awardPeriodResourceAssembler.toResource(awardPeriod);
     }
 
     @Override

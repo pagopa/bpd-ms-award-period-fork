@@ -11,6 +11,9 @@ import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+/**
+ * Controller to expose MicroService
+ */
 @Api(tags = "Bonus Pagamenti Digitali award-period Controller")
 @RequestMapping("/bpd/award-periods")
 public interface BpdAwardPeriodController {

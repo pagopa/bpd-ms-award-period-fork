@@ -29,7 +29,6 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,9 +55,9 @@ public class BpdAwardPeriodControllerImplTest {
 
     @PostConstruct
     public void configureTest() {
-        Optional<AwardPeriod> foundAwardPeriod = Optional.of(new AwardPeriod());
-        foundAwardPeriod.get().setAwardPeriodId(0L);
-        foundAwardPeriod.get().setEnabled(true);
+        AwardPeriod foundAwardPeriod = new AwardPeriod();
+        foundAwardPeriod.setAwardPeriodId(0L);
+        foundAwardPeriod.setEnabled(true);
 
         AwardPeriod awardPeriod = new AwardPeriod();
         awardPeriod.setEnabled(true);

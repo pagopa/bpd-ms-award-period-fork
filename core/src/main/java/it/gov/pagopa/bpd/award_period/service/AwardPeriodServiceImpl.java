@@ -2,6 +2,7 @@ package it.gov.pagopa.bpd.award_period.service;
 
 import eu.sia.meda.service.BaseService;
 import it.gov.pagopa.bpd.award_period.AwardPeriodDAO;
+import it.gov.pagopa.bpd.award_period.exception.AwardPeriodNotFoundException;
 import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -9,9 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-
+/**
+ * @See AwardPeriodService
+ */
 @Service
 class AwardPeriodServiceImpl extends BaseService implements AwardPeriodService {
 
@@ -29,8 +31,9 @@ class AwardPeriodServiceImpl extends BaseService implements AwardPeriodService {
     }
 
     @Override
-    public Optional<AwardPeriod> find(Long awardPeriodId) {
-        return awardPeriodDAO.findById(awardPeriodId);
+    public AwardPeriod find(Long awardPeriodId) {
+        return awardPeriodDAO.findById(awardPeriodId)
+                .orElseThrow(() -> new AwardPeriodNotFoundException(awardPeriodId));
     }
 
 

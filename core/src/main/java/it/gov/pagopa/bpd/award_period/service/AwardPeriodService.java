@@ -4,11 +4,13 @@ import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * A service to manage the Business Logic related to AwardPeriod
+ */
 public interface AwardPeriodService {
 
-    Optional<AwardPeriod> find(Long awardPeriodId);
+    AwardPeriod find(Long awardPeriodId);
 
     List<AwardPeriod> findAll(LocalDate offsetDate);
 

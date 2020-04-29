@@ -1,6 +1,7 @@
 package it.gov.pagopa.bpd.award_period.service;
 
 import it.gov.pagopa.bpd.award_period.AwardPeriodDAO;
+import it.gov.pagopa.bpd.award_period.exception.AwardPeriodNotFoundException;
 import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +17,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -35,13 +34,22 @@ public class AwardPeriodServiceImplTest {
     @Autowired
     private AwardPeriodServiceImpl awardPeriodService;
 
+    private static final Long EXISTING_AWARD_PERIOD = 1L;
+    private static final Long NOT_EXISTING_AWARD_PERIOD = 0L;
+
 
     @PostConstruct
     public void configureTests() {
-        when(awardPeriodDAOMock.findById(any(Long.class)))
+
+        when(awardPeriodDAOMock.findById(anyLong()))
                 .thenAnswer(invocation -> {
-                    final Optional<AwardPeriod> result = Optional.of(new AwardPeriod());
-                    result.get().setAwardPeriodId(invocation.getArgument(0));
+                    Long awardPeriodId = invocation.getArgument(0, Long.class);
+                    Optional<AwardPeriod> result = Optional.empty();
+                    if (EXISTING_AWARD_PERIOD.equals(awardPeriodId)) {
+                        AwardPeriod awardPeriod = new AwardPeriod();
+                        awardPeriod.setAwardPeriodId(awardPeriodId);
+                        result = Optional.of(awardPeriod);
+                    }
                     return result;
                 });
 
@@ -67,14 +75,22 @@ public class AwardPeriodServiceImplTest {
 
     @Test
     public void find() {
-        Long awardPeriodId = new Random().nextLong();
 
-        final Optional<AwardPeriod> found = awardPeriodService.find(awardPeriodId);
+        final AwardPeriod found = awardPeriodService.find(EXISTING_AWARD_PERIOD);
 
-        verify(awardPeriodDAOMock, only()).findById(eq(awardPeriodId));
-        verify(awardPeriodDAOMock, times(1)).findById(eq(awardPeriodId));
-        assertEquals(awardPeriodId, found.get().getAwardPeriodId());
-        assertNotNull(found.get().getAwardPeriodId());
+        verify(awardPeriodDAOMock, only()).findById(eq(EXISTING_AWARD_PERIOD));
+        verify(awardPeriodDAOMock, times(1)).findById(eq(EXISTING_AWARD_PERIOD));
+        assertEquals(EXISTING_AWARD_PERIOD, found.getAwardPeriodId());
+        assertNotNull(found.getAwardPeriodId());
+    }
+
+    @Test(expected = AwardPeriodNotFoundException.class)
+    public void find_KO() {
+
+        final AwardPeriod found = awardPeriodService.find(NOT_EXISTING_AWARD_PERIOD);
+
+        verify(awardPeriodDAOMock, only()).findById(eq(NOT_EXISTING_AWARD_PERIOD));
+        verify(awardPeriodDAOMock, times(1)).findById(eq(NOT_EXISTING_AWARD_PERIOD));
     }
 
     @Test
