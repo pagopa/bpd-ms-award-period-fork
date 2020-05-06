@@ -1,6 +1,7 @@
 package it.gov.pagopa.bpd.award_period.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import it.gov.pagopa.bpd.award_period.model.resource.AwardPeriodResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,12 @@ public interface BpdAwardPeriodController {
 
     @GetMapping(value = "/{awardPeriodId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    AwardPeriodResource find(@PathVariable("awardPeriodId") @NotNull Long awardPeriodId);
+    AwardPeriodResource find(
+            @PathVariable("awardPeriodId")
+            @ApiParam(value = "${swagger.awardPeriod.awardPeriodId}", required = true)
+            @NotNull
+                    Long awardPeriodId
+    );
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
