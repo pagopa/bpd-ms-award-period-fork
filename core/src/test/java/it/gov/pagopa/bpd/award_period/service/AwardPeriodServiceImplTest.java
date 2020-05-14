@@ -56,7 +56,7 @@ public class AwardPeriodServiceImplTest {
         when(awardPeriodDAOMock.findAll())
                 .thenAnswer(invocation -> {
                     AwardPeriod awp = new AwardPeriod();
-                    final List<AwardPeriod> results = new ArrayList<AwardPeriod>();
+                    final List<AwardPeriod> results = new ArrayList<>();
                     results.add(awp);
                     return results;
                 });
@@ -65,6 +65,14 @@ public class AwardPeriodServiceImplTest {
                 .thenAnswer(invocation -> {
                     AwardPeriod awp = new AwardPeriod();
                     final List<AwardPeriod> results = new ArrayList<AwardPeriod>();
+                    results.add(awp);
+                    return results;
+                });
+
+        when(awardPeriodDAOMock.findActiveAwardPeriods())
+                .thenAnswer(invocation -> {
+                    AwardPeriod awp = new AwardPeriod();
+                    final List<AwardPeriod> results = new ArrayList<>();
                     results.add(awp);
                     return results;
                 });
@@ -111,6 +119,15 @@ public class AwardPeriodServiceImplTest {
 
         verify(awardPeriodDAOMock, only()).findAll(Mockito.any(Specification.class));
         verify(awardPeriodDAOMock, times(1)).findAll(Mockito.any(Specification.class));
+        assertNotNull(founds);
+    }
+
+    @Test
+    public void findActiveAwardPeriods() {
+        final List<AwardPeriod> founds = awardPeriodService.findActiveAwardPeriods();
+
+        verify(awardPeriodDAOMock, only()).findActiveAwardPeriods();
+        verify(awardPeriodDAOMock, times(1)).findActiveAwardPeriods();
         assertNotNull(founds);
     }
 

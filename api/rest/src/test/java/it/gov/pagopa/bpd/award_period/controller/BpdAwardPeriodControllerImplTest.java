@@ -25,8 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +45,6 @@ public class BpdAwardPeriodControllerImplTest {
     protected MockMvc mvc;
     protected ObjectMapper objectMapper = new ArchConfiguration().objectMapper();
 
-    LocalDate CURRENT_DATE = LocalDate.now(ZoneOffset.UTC);
     @MockBean
     private AwardPeriodService awardPeriodServiceMock;
     @SpyBean
@@ -67,12 +64,14 @@ public class BpdAwardPeriodControllerImplTest {
 
         doReturn(foundAwardPeriod).when(awardPeriodServiceMock).find(eq(0L));
         doReturn(awardPeriodList).when(awardPeriodServiceMock).findAll(Mockito.any());
+        doReturn(awardPeriodList).when(awardPeriodServiceMock).findActiveAwardPeriods();
+
 
     }
 
     @Test
     public void find() throws Exception {
-        MvcResult result = (MvcResult) mvc.perform(MockMvcRequestBuilders
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .get("/bpd/award-periods/0")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -87,7 +86,7 @@ public class BpdAwardPeriodControllerImplTest {
 
     @Test
     public void find_nullCase() throws Exception {
-        MvcResult result = (MvcResult) mvc.perform(MockMvcRequestBuilders
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .get("/bpd/award-periods/null")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -99,7 +98,7 @@ public class BpdAwardPeriodControllerImplTest {
 
     @Test
     public void findAll() throws Exception {
-        MvcResult result = (MvcResult) mvc.perform(MockMvcRequestBuilders
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .get("/bpd/award-periods")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -112,7 +111,27 @@ public class BpdAwardPeriodControllerImplTest {
                 });
 
         assertNotNull(awardPeriodResourceList);
-        awardPeriodResourceList.stream().forEach(awPeriod -> verify(awardPeriodResourceAssemblerMock)
+        awardPeriodResourceList.forEach(awPeriod -> verify(awardPeriodResourceAssemblerMock)
+                .toResource(any(AwardPeriod.class)));
+
+    }
+
+    @Test
+    public void findActiveAwardPeriods() throws Exception {
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                .get("/bpd/award-periods/actives")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andReturn();
+
+        List<AwardPeriodResource> awardPeriodResourceList = objectMapper.
+                readValue(result.getResponse().
+                        getContentAsString(), new TypeReference<List<AwardPeriodResource>>() {
+                });
+
+        assertNotNull(awardPeriodResourceList);
+        awardPeriodResourceList.forEach(awPeriod -> verify(awardPeriodResourceAssemblerMock)
                 .toResource(any(AwardPeriod.class)));
 
     }

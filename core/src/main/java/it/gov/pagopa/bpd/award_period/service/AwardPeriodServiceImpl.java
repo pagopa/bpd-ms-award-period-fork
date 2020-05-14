@@ -43,4 +43,9 @@ class AwardPeriodServiceImpl extends BaseService implements AwardPeriodService {
                 awardPeriodDAO.findAll() : awardPeriodDAO.findAll(isOffsetDateTimeSpecified(offsetDate));
     }
 
+    @Override
+    public List<AwardPeriod> findActiveAwardPeriods() {
+        return awardPeriodDAO.findActiveAwardPeriods();
+    }
+
 }

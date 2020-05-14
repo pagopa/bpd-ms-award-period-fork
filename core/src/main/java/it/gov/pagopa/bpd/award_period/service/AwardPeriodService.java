@@ -14,4 +14,6 @@ public interface AwardPeriodService {
 
     List<AwardPeriod> findAll(LocalDate offsetDate);
 
+    List<AwardPeriod> findActiveAwardPeriods();
+
 }

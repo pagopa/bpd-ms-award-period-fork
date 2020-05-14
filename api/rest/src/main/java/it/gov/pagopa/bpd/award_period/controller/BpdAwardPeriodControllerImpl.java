@@ -57,4 +57,16 @@ class BpdAwardPeriodControllerImpl extends StatelessController implements BpdAwa
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<AwardPeriodResource> findActiveAwardPeriods() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("BpdAwardPeriodControllerImpl.findActiveAwardPeriods");
+        }
+
+        List<AwardPeriod> awardPeriods = awardPeriodService.findActiveAwardPeriods();
+        return awardPeriods.stream()
+                .map(awardPeriodResourceAssembler::toResource)
+                .collect(Collectors.toList());
+    }
+
 }
