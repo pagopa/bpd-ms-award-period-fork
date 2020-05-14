@@ -30,4 +30,7 @@ public class AwardPeriod extends BaseEntity implements Serializable {
     @Column(name = "aw_period_end_d")
     private LocalDate endDate;
 
+    @Column(name = "aw_grace_period_n")
+    private Long gracePeriod;
+
 }
