@@ -9,12 +9,5 @@
     <groupId>it.gov.pagopa.bpd.ms.award_period.api</groupId>
     <artifactId>bpd-ms-award-period-api-rest</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
 </project>

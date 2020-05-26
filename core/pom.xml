@@ -14,10 +14,5 @@
             <groupId>it.gov.pagopa.bpd.ms.award_period.integration</groupId>
             <artifactId>bpd-ms-award-period-integration-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>
