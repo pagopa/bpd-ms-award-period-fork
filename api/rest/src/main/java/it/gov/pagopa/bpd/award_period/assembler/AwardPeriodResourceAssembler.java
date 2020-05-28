@@ -1,7 +1,7 @@
 package it.gov.pagopa.bpd.award_period.assembler;
 
-import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
-import it.gov.pagopa.bpd.award_period.model.resource.AwardPeriodResource;
+import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
+import it.gov.pagopa.bpd.award_period.model.AwardPeriodResource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

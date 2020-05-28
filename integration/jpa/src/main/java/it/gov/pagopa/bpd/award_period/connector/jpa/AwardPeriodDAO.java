@@ -1,7 +1,7 @@
-package it.gov.pagopa.bpd.award_period;
+package it.gov.pagopa.bpd.award_period.connector.jpa;
 
-import eu.sia.meda.connector.jpa.CrudJpaDAO;
-import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
+import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
+import it.gov.pagopa.bpd.common.connector.jpa.CrudJpaDAO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

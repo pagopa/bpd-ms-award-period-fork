@@ -2,7 +2,7 @@ package it.gov.pagopa.bpd.award_period.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import it.gov.pagopa.bpd.award_period.model.resource.AwardPeriodResource;
+import it.gov.pagopa.bpd.award_period.model.AwardPeriodResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

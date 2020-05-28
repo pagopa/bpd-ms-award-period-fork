@@ -1,6 +1,6 @@
 package it.gov.pagopa.bpd.award_period.service;
 
-import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
+import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,8 +1,8 @@
 package it.gov.pagopa.bpd.award_period.service;
 
-import it.gov.pagopa.bpd.award_period.AwardPeriodDAO;
+import it.gov.pagopa.bpd.award_period.connector.jpa.AwardPeriodDAO;
+import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
 import it.gov.pagopa.bpd.award_period.exception.AwardPeriodNotFoundException;
-import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;

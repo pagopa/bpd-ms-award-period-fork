@@ -1,8 +1,8 @@
-package it.gov.pagopa.bpd.award_period;
+package it.gov.pagopa.bpd.award_period.connector.jpa;
 
 import eu.sia.meda.layers.connector.query.CriteriaQuery;
-import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
-import it.gov.pagopa.bpd.common.BaseCrudJpaDAOTest;
+import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
+import it.gov.pagopa.bpd.common.connector.jpa.BaseCrudJpaDAOTest;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 

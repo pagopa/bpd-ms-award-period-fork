@@ -2,8 +2,8 @@ package it.gov.pagopa.bpd.award_period.controller;
 
 import eu.sia.meda.core.controller.StatelessController;
 import it.gov.pagopa.bpd.award_period.assembler.AwardPeriodResourceAssembler;
-import it.gov.pagopa.bpd.award_period.model.entity.AwardPeriod;
-import it.gov.pagopa.bpd.award_period.model.resource.AwardPeriodResource;
+import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
+import it.gov.pagopa.bpd.award_period.model.AwardPeriodResource;
 import it.gov.pagopa.bpd.award_period.service.AwardPeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
