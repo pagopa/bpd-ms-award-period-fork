@@ -23,8 +23,4 @@ public class AwardPeriodResource {
     @JsonProperty(required = true)
     private LocalDate endDate;
 
-    @ApiModelProperty(value = "${swagger.awardPeriod.gracePeriod}", required = true)
-    @JsonProperty(required = true)
-    private Long gracePeriod;
-
 }
