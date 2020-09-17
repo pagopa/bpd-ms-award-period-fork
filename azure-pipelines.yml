@@ -37,7 +37,7 @@ variables:
     deployment: deployment-sit
     imageRepository: 'bpdmsawardperiod-sit'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
-    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+    dockerRegistryServiceConnection: '0fd12f57-6169-4916-827b-8cc502e9340a'
     containerRegistry: 'cstaruatregistry.azurecr.io'
     devOpsEnv: 'pagopabpdmsawardperiod.bpd-uat'
     deployment: deployment-uat
