@@ -23,7 +23,7 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerfileRelativePath: 'Dockerfile'
+  dockerfileRelativePath: 'dockerfiles/Dockerfile'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -111,7 +111,7 @@ stages:
                   inputs:
                     buildType: 'current'
                     artifactName: 'Dockerfile'
-                    targetPath: '$(Pipeline.Workspace)/Dockerfile'
+                    targetPath: '$(Pipeline.Workspace)/dockerfiles'
                 - task: DownloadPipelineArtifact@2
                   inputs:
                     buildType: 'current'
