@@ -86,7 +86,7 @@ stages:
             displayName: 'Publish Artifact target jar'
             condition: and(succeeded(), eq(variables.isToDeploy, true))
             inputs:
-              targetPath: '$(Build.Repository.LocalPath)/target/*.jar'
+              targetPath: '$(Build.Repository.LocalPath)/target'
               artifact: 'target'
               publishLocation: 'pipeline'    
 
