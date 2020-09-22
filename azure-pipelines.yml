@@ -22,10 +22,9 @@ resources:
 
 variables:
 
-  # Container registry service connection established during pipeline creation
   dockerfileRelativePath: 'Dockerfile'
 
-  # Agent VM image name
+  # Agent VM image name for Build
   vmImageNameBuild: 'ubuntu-latest'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
@@ -34,19 +33,19 @@ variables:
     dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
     containerRegistry: 'cstarregistry.azurecr.io'
     devOpsEnv: 'sit'
-    deployment: deployment
+    deployment: deployment-sit
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'ubuntu-latest'
-    imagePullSecret: 'cstarregistry-auth'
+    imagePullSecret: 'cstarregistry92872b72-auth'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
     dockerRegistryServiceConnection: '0fd12f57-6169-4916-827b-8cc502e9340a'
     containerRegistry: 'cstaruatregistry.azurecr.io'
     devOpsEnv: 'uat-test'
-    deployment: deployment
+    deployment: deployment-uat
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'uatagent-latest'
-    imagePullSecret: 'cstaruatregistry-auth'
- 
+    imagePullSecret: 'cstarregistry92872b72-auth'
+
 
 stages:
   - stage: Build
@@ -103,12 +102,13 @@ stages:
     displayName: Deploy stage
     dependsOn: Build
     condition: and(succeeded(), eq(variables.isToDeploy, true))
+
     jobs:
       - deployment: Deploy
         displayName: Deploy
         pool:
           vmImage: $(vmImageNameDeploy)
-        environment: ${devOpsEnv}
+        environment: 'pagopabpdmsawardperiod.bpd-test'
         strategy:
           runOnce:
             deploy:
@@ -130,3 +130,4 @@ stages:
                       $(imagePullSecret)
                     containers: |
                       $(containerRegistry)/$(imageRepository):$(Build.BuildId)
+
