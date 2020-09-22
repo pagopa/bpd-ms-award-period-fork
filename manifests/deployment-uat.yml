@@ -4,6 +4,9 @@ metadata:
   name: bpdmsawardperiod
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: bpdmsawardperiod
   template:
     metadata:
       labels:
@@ -11,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bpdmsawardperiod
-          image: cstarregistry.azurecr.io/bpdmsawardperiod-uat
+          image: cstaruatregistry.azurecr.io/bpdmsawardperiod
           ports:
             - containerPort: 8080
           envFrom:
