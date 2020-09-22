@@ -22,19 +22,29 @@ resources:
 
 variables:
 
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
-  imageRepository: 'bpdmsawardperiod'
-  containerRegistry: 'cstarregistry.azurecr.io'
   dockerfileRelativePath: 'Dockerfile'
-  tag: '$(Build.BuildId)'
-  imagePullSecret: 'cstarregistry92872b72-auth'
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  # Agent VM image name for Build
+  vmImageNameBuild: 'ubuntu-latest'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
-  #isToDeploy: $[ne(variables['Build.Reason'], 'PullRequest')]
+
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
+    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+    containerRegistry: 'cstarregistry.azurecr.io'
+    devOpsEnv: 'sit'
+    deployment: deployment
+    imageRepository: 'bpdmsawardperiod'
+    vmImageNameDeploy: 'ubuntu-latest'
+    imagePullSecret: 'cstarregistry-auth'
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
+    dockerRegistryServiceConnection: '0fd12f57-6169-4916-827b-8cc502e9340a'
+    containerRegistry: 'cstaruatregistry.azurecr.io'
+    devOpsEnv: 'uat-test'
+    deployment: deployment
+    imageRepository: 'bpdmsawardperiod'
+    vmImageNameDeploy: 'uatagent-latest'
+    imagePullSecret: 'cstaruatregistry-auth'
 
 
 stages:
@@ -44,7 +54,7 @@ stages:
       - job: Build
         displayName: Build
         pool:
-          vmImage: $(vmImageName)
+          vmImage: $(vmImageNameBuild)
         steps:
           - task: DownloadSecureFile@1
             displayName: 'download settings.xml for Maven'
@@ -77,7 +87,9 @@ stages:
               command: 'buildAndPush'
               Dockerfile: '$(Build.Repository.LocalPath)/$(dockerfileRelativePath)'
               buildContext: '$(Build.Repository.LocalPath)'
-              tags: '$(tag)'
+              tags: |
+                $(Build.BuildId)
+                latest
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Atrifact manifests'
             condition: and(succeeded(), eq(variables.isToDeploy, true))
@@ -95,7 +107,7 @@ stages:
       - deployment: Deploy
         displayName: Deploy
         pool:
-          vmImage: $(vmImageName)
+          vmImage: $(vmImageNameDeploy)
         environment: 'pagopabpdmsawardperiod.bpd-test'
         strategy:
           runOnce:
@@ -117,5 +129,5 @@ stages:
                     imagePullSecrets: |
                       $(imagePullSecret)
                     containers: |
-                      $(containerRegistry)/$(imageRepository):$(tag)
+                      $(containerRegistry)/$(imageRepository):$(Build.BuildId)
 
