@@ -44,7 +44,7 @@ variables:
     deployment: deployment-uat
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'uatagent-latest'
-    imagePullSecret: 'cstaruatregistry-auth'
+    imagePullSecret: 'cstarregistry92872b72-auth'
 
 
 stages:
