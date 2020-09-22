@@ -37,14 +37,16 @@ variables:
     deployment: deployment
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'ubuntu-latest'
+    imagePullSecret: 'cstarregistry-auth'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
     dockerRegistryServiceConnection: '0fd12f57-6169-4916-827b-8cc502e9340a'
     containerRegistry: 'cstaruatregistry.azurecr.io'
     devOpsEnv: 'uat-test'
     deployment: deployment
     imageRepository: 'bpdmsawardperiod'
-    vmImageNameDeploy: 'uat-agent-latest'
-
+    vmImageNameDeploy: 'uatagent-latest'
+    imagePullSecret: 'cstaruatregistry-auth'
+ 
 
 stages:
   - stage: Build
