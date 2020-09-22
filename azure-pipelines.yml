@@ -23,7 +23,7 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerfileRelativePath: 'dockerfiles/Dockerfile'
+  dockerfileRelativePath: 'Dockerfile'
 
   # Agent VM image name
   vmImageNameBuild: 'ubuntu-latest'
