@@ -105,7 +105,7 @@ stages:
     condition: and(succeeded(), eq(variables.isToDeploy, true))
 
     jobs:
-      - deployment: Deploy
+      - deployment: Deploy1
         displayName: Deploy SIT
         condition: eq(variables.isSIT, true)
         pool:
@@ -132,7 +132,7 @@ stages:
                       $(imagePullSecret)
                     containers: |
                       $(containerRegistry)/$(imageRepository):$(Build.BuildId)
-      - deployment: Deploy
+      - deployment: Deploy2
         displayName: Deploy UAT
         condition: eq(variables.isUAT, true)
         pool:
