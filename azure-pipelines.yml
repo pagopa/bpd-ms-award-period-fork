@@ -37,7 +37,7 @@ variables:
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
     dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
     containerRegistry: 'cstarregistry.azurecr.io'
-    devOpsEnv: 'sit'
+    devOpsEnv: 'sit.bpd-test'
     deployment: deployment-sit
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'ubuntu-latest'
