@@ -26,19 +26,21 @@ variables:
 
   # Agent VM image name for Build
   vmImageNameBuild: 'ubuntu-latest'
+  dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+  imageRepository: 'bpdmsawardperiod'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
   isSIT: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/st')]
   isUAT: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/uat')]
 
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
-    dockerRegistryServiceConnection: 'cstarregistry-connection'
+    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
     containerRegistry: 'cstarregistry.azurecr.io'
     devOpsEnv: 'sit'
     deployment: deployment-sit
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'ubuntu-latest'
-    imagePullSecret: 'cstarregistry-auth'
+    imagePullSecret: 'cstarregistry92872b72-auth'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
     dockerRegistryServiceConnection: 'cstaruatregistry-connection'
     containerRegistry: 'cstaruatregistry.azurecr.io'
