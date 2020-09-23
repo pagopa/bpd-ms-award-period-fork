@@ -35,17 +35,15 @@ variables:
     dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
     imageRepository: 'bpdmsawardperiod'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
-    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+    dockerRegistryServiceConnection: 'cstarregistry-connection'
     containerRegistry: 'cstarregistry.azurecr.io'
-    devOpsEnv: 'sit'
     deployment: deployment-sit
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'ubuntu-latest'
-    imagePullSecret: 'cstarregistry92872b72-auth'
+    imagePullSecret: 'cstarregistry-auth'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
     dockerRegistryServiceConnection: 'cstaruatregistry-connection'
     containerRegistry: 'cstaruatregistry.azurecr.io'
-    devOpsEnv: 'uat-test'
     deployment: deployment-uat
     imageRepository: 'bpdmsawardperiod'
     imagePullSecret: 'cstaruatregistry-auth'
@@ -113,28 +111,28 @@ stages:
         condition: eq(variables.isSIT, true)
         pool:
           vmImage: $(vmImageNameDeploy)
-        environment: ${devOpsEnv}
+        environment: 'sit.bpd-test'
         strategy:
           runOnce:
             deploy:
               steps:
-              - task: KubernetesManifest@0
-                displayName: Create imagePullSecret
-                inputs:
-                  action: createSecret
-                  secretName: $(imagePullSecret)
-                  dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-              - task: KubernetesManifest@0
-                displayName: Deploy to Kubernetes cluster
-                inputs:
-                  action: deploy
-                  manifests: |
-                    $(Pipeline.Workspace)/manifests/deployment.yml
-                    $(Pipeline.Workspace)/manifests/service.yml
-                  imagePullSecrets: |
-                    $(imagePullSecret)
-                  containers: |
-                    $(containerRegistry)/$(imageRepository):$(Build.BuildId)
+                - task: KubernetesManifest@0
+                  displayName: Create imagePullSecret
+                  inputs:
+                    action: createSecret
+                    secretName: $(imagePullSecret)
+                    dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+                - task: KubernetesManifest@0
+                  displayName: Deploy to Kubernetes cluster
+                  inputs:
+                    action: deploy
+                    manifests: |
+                      $(Pipeline.Workspace)/manifests/deployment.yml
+                      $(Pipeline.Workspace)/manifests/service.yml
+                    imagePullSecrets: |
+                      $(imagePullSecret)
+                    containers: |
+                      $(containerRegistry)/$(imageRepository):$(Build.BuildId)
                     
       - deployment: Deploy2
         displayName: Deploy UAT
