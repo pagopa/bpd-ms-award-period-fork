@@ -28,23 +28,24 @@ variables:
   vmImageNameBuild: 'ubuntu-latest'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
+  isSIT: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/st')]
+  isUAT: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/uat')]
 
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
-    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
+    dockerRegistryServiceConnection: 'cstarregistry-connection'
     containerRegistry: 'cstarregistry.azurecr.io'
     devOpsEnv: 'sit'
     deployment: deployment-sit
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'ubuntu-latest'
-    imagePullSecret: 'cstarregistry92872b72-auth'
+    imagePullSecret: 'cstarregistry-auth'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
-    dockerRegistryServiceConnection: '0fd12f57-6169-4916-827b-8cc502e9340a'
+    dockerRegistryServiceConnection: 'cstaruatregistry-connection'
     containerRegistry: 'cstaruatregistry.azurecr.io'
     devOpsEnv: 'uat-test'
     deployment: deployment-uat
     imageRepository: 'bpdmsawardperiod'
-    vmImageNameDeploy: 'uatagent-latest'
-    imagePullSecret: 'cstarregistry92872b72-auth'
+    imagePullSecret: 'cstaruatregistry-auth'
 
 
 stages:
@@ -104,30 +105,61 @@ stages:
     condition: and(succeeded(), eq(variables.isToDeploy, true))
 
     jobs:
-      - deployment: Deploy
-        displayName: Deploy
+      - deployment: Deploy1
+        displayName: Deploy SIT
+        condition: eq(variables.isSIT, true)
         pool:
           vmImage: $(vmImageNameDeploy)
-        environment: 'pagopabpdmsawardperiod.bpd-test'
+        environment: ${devOpsEnv}
         strategy:
           runOnce:
             deploy:
               steps:
-                - task: KubernetesManifest@0
-                  displayName: Create imagePullSecret
-                  inputs:
-                    action: createSecret
-                    secretName: $(imagePullSecret)
-                    dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-                - task: KubernetesManifest@0
-                  displayName: Deploy to Kubernetes cluster
-                  inputs:
-                    action: deploy
-                    manifests: |
-                      $(Pipeline.Workspace)/manifests/deployment.yml
-                      $(Pipeline.Workspace)/manifests/service.yml
-                    imagePullSecrets: |
-                      $(imagePullSecret)
-                    containers: |
-                      $(containerRegistry)/$(imageRepository):$(Build.BuildId)
+              - download: none
+              - task: DownloadPipelineArtifact@2
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'manifests'
+                  targetPath: '$(Pipeline.Workspace)/manifests'
+              - task: KubernetesManifest@0
+                displayName: Deploy to Kubernetes cluster
+                inputs:
+                  action: deploy
+                  manifests: |
+                    $(Pipeline.Workspace)/manifests/deployment.yml
+                    $(Pipeline.Workspace)/manifests/service.yml
+                  imagePullSecrets: |
+                    $(imagePullSecret)
+                  containers: |
+                    $(containerRegistry)/$(imageRepository):$(Build.BuildId)
+                    
+      - deployment: Deploy2
+        displayName: Deploy UAT
+        condition: eq(variables.isUAT, true)
+        pool:
+          name: uat_agent_pool
+          demands:
+          - agent.name -equals ddsrpst01 
+        environment: 'uat-test'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - download: none
+              - task: DownloadPipelineArtifact@2
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'manifests'
+                  targetPath: '$(Pipeline.Workspace)/manifests'
+              - task: KubernetesManifest@0
+                displayName: Deploy to Kubernetes cluster
+                inputs:
+                  action: 'deploy'
+                  kubernetesServiceConnection: 'ddsakstest-self-connection-bpd-uat'
+                  namespace: 'bpd-uat'
+                  manifests: |
+                    $(Pipeline.Workspace)/manifests/$(deployment).yml
+                    $(Pipeline.Workspace)/manifests/service.yml
+                  containers: '$(containerRegistry)/$(imageRepository):$(Build.BuildId)'
+                  imagePullSecrets: '$(imagePullSecret)'                      
 
