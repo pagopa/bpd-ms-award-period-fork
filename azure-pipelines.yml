@@ -37,6 +37,7 @@ variables:
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
     dockerRegistryServiceConnection: 'cstarregistry-connection'
     containerRegistry: 'cstarregistry.azurecr.io'
+    devOpsEnv: 'sit.bpd-test'
     deployment: deployment-sit
     imageRepository: 'bpdmsawardperiod'
     vmImageNameDeploy: 'ubuntu-latest'
@@ -44,6 +45,7 @@ variables:
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
     dockerRegistryServiceConnection: 'cstaruatregistry-connection'
     containerRegistry: 'cstaruatregistry.azurecr.io'
+    devOpsEnv: 'uat-test'
     deployment: deployment-uat
     imageRepository: 'bpdmsawardperiod'
     imagePullSecret: 'cstaruatregistry-auth'
@@ -127,7 +129,7 @@ stages:
                   inputs:
                     action: deploy
                     manifests: |
-                      $(Pipeline.Workspace)/manifests/deployment.yml
+                      $(Pipeline.Workspace)/manifests/$(deployment).yml
                       $(Pipeline.Workspace)/manifests/service.yml
                     imagePullSecrets: |
                       $(imagePullSecret)
