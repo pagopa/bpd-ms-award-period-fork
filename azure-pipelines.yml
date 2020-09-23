@@ -113,7 +113,7 @@ stages:
         condition: eq(variables.isSIT, true)
         pool:
           vmImage: $(vmImageNameDeploy)
-        environment: 'pagopabpdmsawardperiod.bpd-test'
+        environment: 'sit.bpd-test'
         strategy:
           runOnce:
             deploy:
