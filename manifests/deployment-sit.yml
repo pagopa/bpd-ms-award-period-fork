@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: bpdmsawardperiod
-          image: cstarregistry.azurecr.io/bpdmsawardperiod-sit
+          image: cstarregistry.azurecr.io/bpdmsawardperiod
           ports:
             - containerPort: 8080
           envFrom:
