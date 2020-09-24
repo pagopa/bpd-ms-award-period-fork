@@ -28,5 +28,5 @@ spec:
                 name: jvm
       hostAliases:
         - hostnames:
-            - bpd-hub-dev.servicebus.windows.net
-          ip: 10.70.5.10
+            - bpd-event-uat.servicebus.windows.net
+          ip: 10.70.67.5

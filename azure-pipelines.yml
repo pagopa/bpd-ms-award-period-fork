@@ -25,10 +25,12 @@ variables:
   dockerfileRelativePath: 'Dockerfile'
 
   # Agent VM image name for Build
+
   vmImageNameDefault: 'ubuntu-latest'
 
   # Image Repository Name
   imageRepository: 'bpdmsawardperiod'
+
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
   isSIT: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/st')]
@@ -56,6 +58,7 @@ stages:
         displayName: Build
         pool:
           vmImage: $(vmImageNameDefault)
+
         steps:
           - task: DownloadSecureFile@1
             displayName: 'download settings.xml for Maven'
