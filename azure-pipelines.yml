@@ -23,33 +23,28 @@ resources:
 variables:
 
   dockerfileRelativePath: 'Dockerfile'
+  dockerRegistryServiceConnection: 'none'
 
   # Agent VM image name for Build
-  vmImageNameBuild: 'ubuntu-latest'
+  vmImageNameDefault: 'ubuntu-latest'
+
+  # Image Repository Name
+  imageRepository: 'bpdmsawardperiod'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release')))]
   isSIT: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/st')]
   isUAT: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/uat')]
 
-#  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/develop') }}:
-#    dockerRegistryServiceConnection: '1b7900a3-6e8a-403a-b6ce-349854a5c6b8'
-#    imageRepository: 'bpdmsawardperiod'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
     dockerRegistryServiceConnection: 'cstarregistry-connection'
     containerRegistry: 'cstarregistry.azurecr.io'
-    devOpsEnv: 'sit.bpd-test'
     deployment: deployment-sit
-    imageRepository: 'bpdmsawardperiod'
-    vmImageNameDeploy: 'ubuntu-latest'
     imagePullSecret: 'cstarregistry-auth'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/uat') }}:
     dockerRegistryServiceConnection: 'cstaruatregistry-connection'
     containerRegistry: 'cstaruatregistry.azurecr.io'
-    devOpsEnv: 'uat-test'
     deployment: deployment-uat
-    imageRepository: 'bpdmsawardperiod'
     imagePullSecret: 'cstaruatregistry-auth'
-
 
 stages:
   - stage: Build
@@ -58,7 +53,7 @@ stages:
       - job: Build
         displayName: Build
         pool:
-          vmImage: $(vmImageNameBuild)
+          vmImage: $(vmImageNameDefault)
         steps:
           - task: DownloadSecureFile@1
             displayName: 'download settings.xml for Maven'
@@ -112,7 +107,7 @@ stages:
         displayName: Deploy SIT
         condition: eq(variables.isSIT, true)
         pool:
-          vmImage: $(vmImageNameDeploy)
+          vmImage: $(vmImageNameDefault)
         environment: 'sit.bpd-test'
         strategy:
           runOnce:
@@ -143,7 +138,7 @@ stages:
           name: uat_agent_pool
           demands:
           - agent.name -equals ddsrpst01 
-        environment: 'uat-test'
+        environment: 'uat'
         strategy:
           runOnce:
             deploy:
@@ -164,5 +159,4 @@ stages:
                     $(Pipeline.Workspace)/manifests/$(deployment).yml
                     $(Pipeline.Workspace)/manifests/service.yml
                   containers: '$(containerRegistry)/$(imageRepository):$(Build.BuildId)'
-                  imagePullSecrets: '$(imagePullSecret)'                      
-
+                  imagePullSecrets: '$(imagePullSecret)'
