@@ -1,9 +1,12 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bpdmsawardperiod
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: bpdmsawardperiod
   template:
     metadata:
       labels:
@@ -11,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bpdmsawardperiod
-          image: cstarregistry.azurecr.io/bpdmsawardperiod-uat
+          image: cstaruatregistry.azurecr.io/bpdmsawardperiod
           ports:
             - containerPort: 8080
           envFrom:
@@ -21,6 +24,8 @@ spec:
                 name: eventhub-logging
             - configMapRef:
                 name: bpdmsawardperiod
+            - configMapRef:
+                name: jvm
       hostAliases:
         - hostnames:
             - bpd-hub-dev.servicebus.windows.net

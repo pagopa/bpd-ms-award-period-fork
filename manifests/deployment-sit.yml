@@ -21,6 +21,8 @@ spec:
                 name: eventhub-logging
             - configMapRef:
                 name: bpdmsawardperiod
+            - configMapRef:
+                name: jvm
       hostAliases:
         - hostnames:
             - bpd-hub-dev.servicebus.windows.net
