@@ -23,7 +23,7 @@ resources:
 variables:
 
   dockerfileRelativePath: 'Dockerfile'
-  dockerRegistryServiceConnection: 'none'
+  dockerRegistryServiceConnection: 'cstarregistry-connection'
 
   # Agent VM image name for Build
   vmImageNameDefault: 'ubuntu-latest'
