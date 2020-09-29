@@ -23,4 +23,24 @@ public class AwardPeriodResource {
     @JsonProperty(required = true)
     private LocalDate endDate;
 
+    @ApiModelProperty(value = "${swagger.awardPeriod.minTransactionNumber}", required = true)
+    @JsonProperty(required = true)
+    private Long minTransactionNumber;
+
+    @ApiModelProperty(value = "${swagger.awardPeriod.maxAmount}", required = true)
+    @JsonProperty(required = true)
+    private Long maxAmount;
+
+    @ApiModelProperty(value = "${swagger.awardPeriod.minPosition}", required = true)
+    @JsonProperty(required = true)
+    private Long minPosition;
+
+    @ApiModelProperty(value = "${swagger.awardPeriod.maxTransactionCashback}", required = true)
+    @JsonProperty(required = true)
+    private Long maxTransactionCashback;
+
+    @ApiModelProperty(value = "${swagger.awardPeriod.maxPeriodCashback}", required = true)
+    @JsonProperty(required = true)
+    private Long maxPeriodCashback;
+
 }
