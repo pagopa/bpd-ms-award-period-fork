@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = {"awardPeriodId"}, callSuper = false)
 @Table(name = "bpd_award_period")
 @Where(clause = "ENABLED_B = 'TRUE'")
+@Cacheable
 public class AwardPeriod extends BaseEntity implements Serializable {
 
     @Id
