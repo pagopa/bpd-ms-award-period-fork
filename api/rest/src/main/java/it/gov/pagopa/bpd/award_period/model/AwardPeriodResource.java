@@ -43,4 +43,20 @@ public class AwardPeriodResource {
     @JsonProperty(required = true)
     private Long maxPeriodCashback;
 
+    @ApiModelProperty(value = "${swagger.awardPeriod.cashbackPercentage}", required = true)
+    @JsonProperty(required = true)
+    private Long cashbackPercentage;
+
+    @ApiModelProperty(value = "${swagger.awardPeriod.gracePeriod}", required = true)
+    @JsonProperty(required = true)
+    private Long gracePeriod;
+
+    @ApiModelProperty(value = "${swagger.awardPeriod.status}", required = true)
+    @JsonProperty(required = true)
+    private String status;
+
+    @ApiModelProperty(value = "${swagger.awardPeriod.maxTransactionEvaluated}", required = true)
+    @JsonProperty(required = true)
+    private Long maxTransactionEvaluated;
+
 }
