@@ -52,9 +52,6 @@ public class AwardPeriod extends BaseEntity implements Serializable {
     @Column(name = "cashback_perc_n")
     private Long cashbackPercentage;
 
-    @Column(name = "status_period_c")
-    private String status;
-
     @Column(name = "trx_eval_max_n")
     private Long maxTransactionEvaluated;
 
