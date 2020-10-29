@@ -34,4 +34,25 @@ public class AwardPeriod extends BaseEntity implements Serializable {
     @Column(name = "aw_grace_period_n")
     private Long gracePeriod;
 
+    @Column(name = "trx_volume_min_n")
+    private Long minTransactionNumber;
+
+    @Column(name = "amount_max_n")
+    private Long maxAmount;
+
+    @Column(name = "ranking_min_n")
+    private Long minPosition;
+
+    @Column(name = "trx_cashback_max_n")
+    private Long maxTransactionCashback;
+
+    @Column(name = "period_cashback_max_n")
+    private Long maxPeriodCashback;
+
+    @Column(name = "cashback_perc_n")
+    private Long cashbackPercentage;
+
+    @Column(name = "trx_eval_max_n")
+    private Long maxTransactionEvaluated;
+
 }

@@ -4,6 +4,7 @@ import eu.sia.meda.core.controller.StatelessController;
 import it.gov.pagopa.bpd.award_period.assembler.AwardPeriodResourceAssembler;
 import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
 import it.gov.pagopa.bpd.award_period.model.AwardPeriodResource;
+import it.gov.pagopa.bpd.award_period.model.AwardPeriodServiceModel;
 import it.gov.pagopa.bpd.award_period.service.AwardPeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ class BpdAwardPeriodControllerImpl extends StatelessController implements BpdAwa
             logger.debug("awardPeriodId = [" + awardPeriodId + "]");
         }
 
-        final AwardPeriod awardPeriod = awardPeriodService.find(awardPeriodId);
+        final AwardPeriodServiceModel awardPeriod = awardPeriodService.find(awardPeriodId);
         return awardPeriodResourceAssembler.toResource(awardPeriod);
     }
 
@@ -51,7 +52,7 @@ class BpdAwardPeriodControllerImpl extends StatelessController implements BpdAwa
             offsetDate = offsetDateTime.toLocalDate();
         }
 
-        List<AwardPeriod> awardPeriods = awardPeriodService.findAll(offsetDate);
+        List<AwardPeriodServiceModel> awardPeriods = awardPeriodService.findAll(offsetDate);
         return awardPeriods.stream()
                 .map(awardPeriodResourceAssembler::toResource)
                 .collect(Collectors.toList());
@@ -63,7 +64,7 @@ class BpdAwardPeriodControllerImpl extends StatelessController implements BpdAwa
             logger.debug("BpdAwardPeriodControllerImpl.findActiveAwardPeriods");
         }
 
-        List<AwardPeriod> awardPeriods = awardPeriodService.findActiveAwardPeriods();
+        List<AwardPeriodServiceModel> awardPeriods = awardPeriodService.findActiveAwardPeriods();
         return awardPeriods.stream()
                 .map(awardPeriodResourceAssembler::toResource)
                 .collect(Collectors.toList());

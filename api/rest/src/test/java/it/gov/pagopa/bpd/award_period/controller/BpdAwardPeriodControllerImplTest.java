@@ -7,6 +7,7 @@ import eu.sia.meda.config.ArchConfiguration;
 import it.gov.pagopa.bpd.award_period.assembler.AwardPeriodResourceAssembler;
 import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
 import it.gov.pagopa.bpd.award_period.model.AwardPeriodResource;
+import it.gov.pagopa.bpd.award_period.model.AwardPeriodServiceModel;
 import it.gov.pagopa.bpd.award_period.service.AwardPeriodService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,14 +53,12 @@ public class BpdAwardPeriodControllerImplTest {
 
     @PostConstruct
     public void configureTest() {
-        AwardPeriod foundAwardPeriod = new AwardPeriod();
+        AwardPeriodServiceModel foundAwardPeriod = new AwardPeriodServiceModel();
         foundAwardPeriod.setAwardPeriodId(0L);
-        foundAwardPeriod.setEnabled(true);
 
-        AwardPeriod awardPeriod = new AwardPeriod();
-        awardPeriod.setEnabled(true);
+        AwardPeriodServiceModel awardPeriod = new AwardPeriodServiceModel();
         awardPeriod.setAwardPeriodId(0L);
-        List<AwardPeriod> awardPeriodList = new ArrayList<>();
+        List<AwardPeriodServiceModel> awardPeriodList = new ArrayList<>();
         awardPeriodList.add(awardPeriod);
 
         doReturn(foundAwardPeriod).when(awardPeriodServiceMock).find(eq(0L));
@@ -81,7 +80,7 @@ public class BpdAwardPeriodControllerImplTest {
                 AwardPeriodResource.class);
         assertNotNull(awardPeriodResource);
         verify(awardPeriodServiceMock).find(eq(0L));
-        verify(awardPeriodResourceAssemblerMock).toResource(any(AwardPeriod.class));
+        verify(awardPeriodResourceAssemblerMock).toResource(any(AwardPeriodServiceModel.class));
     }
 
     @Test
@@ -112,7 +111,7 @@ public class BpdAwardPeriodControllerImplTest {
 
         assertNotNull(awardPeriodResourceList);
         awardPeriodResourceList.forEach(awPeriod -> verify(awardPeriodResourceAssemblerMock)
-                .toResource(any(AwardPeriod.class)));
+                .toResource(any(AwardPeriodServiceModel.class)));
 
     }
 
@@ -132,7 +131,7 @@ public class BpdAwardPeriodControllerImplTest {
 
         assertNotNull(awardPeriodResourceList);
         awardPeriodResourceList.forEach(awPeriod -> verify(awardPeriodResourceAssemblerMock)
-                .toResource(any(AwardPeriod.class)));
+                .toResource(any(AwardPeriodServiceModel.class)));
 
     }
 
