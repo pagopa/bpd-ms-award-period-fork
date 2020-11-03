@@ -154,7 +154,7 @@ stages:
                     imagePullSecrets: |
                       $(imagePullSecret)
                     containers: |
-                      $(containerRegistry)/$(imageRepository):$(Build.BuildId)
+                      $(containerRegistry)/$(imageRepository):$(pomversion)
                     
       - deployment: Deploy2
         displayName: Deploy UAT
