@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>it.gov.pagopa.bpd.ms</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.3</version>
         <artifactId>bpd-ms-starter-parent</artifactId>
     </parent>
+
     <artifactId>bpd-ms-award-period</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <bpd-commons.version>1.0.4</bpd-commons.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_period.integration</groupId>
                 <artifactId>bpd-ms-award-period-integration-jpa</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_period.integration</groupId>
@@ -30,40 +35,40 @@
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_period</groupId>
                 <artifactId>bpd-ms-award-period-core</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_period.api</groupId>
                 <artifactId>bpd-ms-award-period-api-rest</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons</groupId>
                 <artifactId>bpd-commons-base</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${bpd-commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons</groupId>
                 <artifactId>bpd-commons-base</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${bpd-commons.version}</version>
                 <type>test-jar</type>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons.integration</groupId>
                 <artifactId>bpd-commons-integration-jpa</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${bpd-commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons.integration</groupId>
                 <artifactId>bpd-commons-integration-jpa</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${bpd-commons.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons.api</groupId>
                 <artifactId>bpd-commons-api-rest</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${bpd-commons.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -92,4 +97,29 @@
         <module>integration</module>
         <module>api</module>
     </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>cstar</id>
+            <url>https://pkgs.dev.azure.com/sia-dds/cstar/_packaging/cstar/maven/v1</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>cstar</id>
+            <url>https://pkgs.dev.azure.com/sia-dds/cstar/_packaging/cstar/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/pagopa/bpd-ms-award-period.git</developerConnection>
+        <tag>1.0.0</tag>
+    </scm>
 </project>
