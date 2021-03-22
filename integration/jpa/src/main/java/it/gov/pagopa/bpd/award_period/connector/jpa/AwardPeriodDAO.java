@@ -16,7 +16,8 @@ public interface AwardPeriodDAO extends CrudJpaDAO<AwardPeriod, Long> {
     @Query(value = "SELECT aw " +
             "FROM AwardPeriod aw " +
             "WHERE CURRENT_DATE BETWEEN aw_period_start_d" +
-            " AND (aw_period_end_d + aw_grace_period_n)")
+            " AND (aw_period_end_d + aw_grace_period_n)" +
+            "AND ENABLED_B = TRUE")
     List<AwardPeriod> findActiveAwardPeriods();
 }
 

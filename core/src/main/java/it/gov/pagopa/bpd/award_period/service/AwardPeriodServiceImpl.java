@@ -5,6 +5,7 @@ import it.gov.pagopa.bpd.award_period.assembler.AwardPeriodServiceModelAssembler
 import it.gov.pagopa.bpd.award_period.connector.jpa.AwardPeriodDAO;
 import it.gov.pagopa.bpd.award_period.connector.jpa.model.AwardPeriod;
 import it.gov.pagopa.bpd.award_period.exception.AwardPeriodNotFoundException;
+import it.gov.pagopa.bpd.award_period.exception.AwardPeriodNotEnabledException;
 import it.gov.pagopa.bpd.award_period.model.AwardPeriodServiceModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,6 +40,9 @@ class AwardPeriodServiceImpl extends BaseService implements AwardPeriodService {
     public AwardPeriodServiceModel find(Long awardPeriodId) {
         AwardPeriod awardPeriod = awardPeriodDAO.findById(awardPeriodId)
                 .orElseThrow(() -> new AwardPeriodNotFoundException(awardPeriodId));
+        if (!awardPeriod.isEnabled()) {
+            throw new AwardPeriodNotEnabledException(awardPeriodId);
+        }
         AwardPeriodServiceModel awardPeriodServiceModel = awardPeriodServiceModelAssembler.toResource(awardPeriod);
         return defineAndSetStatus(awardPeriodServiceModel);
     }
