@@ -55,4 +55,7 @@ public class AwardPeriod extends BaseEntity implements Serializable {
     @Column(name = "trx_eval_max_n")
     private Long maxTransactionEvaluated;
 
+    @Column(name = "min_amount_n")
+    private Long minAmount;
+
 }

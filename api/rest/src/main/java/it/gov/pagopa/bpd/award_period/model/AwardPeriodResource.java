@@ -59,4 +59,8 @@ public class AwardPeriodResource {
     @JsonProperty(required = true)
     private Long maxTransactionEvaluated;
 
+    @ApiModelProperty(value = "${swagger.awardPeriod.minAmount}", required = true)
+    @JsonProperty(required = true)
+    private Long minAmount;
+
 }

@@ -19,5 +19,6 @@ public class AwardPeriodServiceModel {
     private Long cashbackPercentage;
     private String status;
     private Long maxTransactionEvaluated;
+    private Long minAmount;
 
 }
