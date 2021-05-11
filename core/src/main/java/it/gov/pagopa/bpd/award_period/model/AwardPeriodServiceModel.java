@@ -2,6 +2,7 @@ package it.gov.pagopa.bpd.award_period.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -19,6 +20,6 @@ public class AwardPeriodServiceModel {
     private Long cashbackPercentage;
     private String status;
     private Long maxTransactionEvaluated;
-    private Long minAmount;
+    private BigDecimal minAmount;
 
 }

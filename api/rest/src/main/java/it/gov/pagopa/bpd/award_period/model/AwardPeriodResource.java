@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -61,6 +62,6 @@ public class AwardPeriodResource {
 
     @ApiModelProperty(value = "${swagger.awardPeriod.minAmount}", required = true)
     @JsonProperty(required = true)
-    private Long minAmount;
+    private BigDecimal minAmount;
 
 }

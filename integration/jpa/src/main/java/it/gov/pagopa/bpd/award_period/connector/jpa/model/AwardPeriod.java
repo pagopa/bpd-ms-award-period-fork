@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -56,6 +57,6 @@ public class AwardPeriod extends BaseEntity implements Serializable {
     private Long maxTransactionEvaluated;
 
     @Column(name = "min_amount_n")
-    private Long minAmount;
+    private BigDecimal minAmount;
 
 }
