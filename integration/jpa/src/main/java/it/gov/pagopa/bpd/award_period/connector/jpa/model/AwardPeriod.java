@@ -39,7 +39,7 @@ public class AwardPeriod extends BaseEntity implements Serializable {
     private Long minTransactionNumber;
 
     @Column(name = "amount_max_n")
-    private Long maxAmount;
+    private BigDecimal maxAmount;
 
     @Column(name = "ranking_min_n")
     private Long minPosition;

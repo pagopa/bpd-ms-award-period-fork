@@ -13,7 +13,7 @@ public class AwardPeriodServiceModel {
     private LocalDate endDate;
     private Long gracePeriod;
     private Long minTransactionNumber;
-    private Long maxAmount;
+    private BigDecimal maxAmount;
     private Long minPosition;
     private Long maxTransactionCashback;
     private Long maxPeriodCashback;

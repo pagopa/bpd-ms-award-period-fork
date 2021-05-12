@@ -30,7 +30,7 @@ public class AwardPeriodResource {
 
     @ApiModelProperty(value = "${swagger.awardPeriod.maxAmount}", required = true)
     @JsonProperty(required = true)
-    private Long maxAmount;
+    private BigDecimal maxAmount;
 
     @ApiModelProperty(value = "${swagger.awardPeriod.minPosition}", required = true)
     @JsonProperty(required = true)
