@@ -4,10 +4,10 @@
     <parent>
     <artifactId>bpd-ms-award-period-api</artifactId>
     <groupId>it.gov.pagopa.bpd.ms.award_period</groupId>
-    <version>CEN-157-rc1</version>
+    <version>CEN-157-rc3</version>
   </parent>
     <groupId>it.gov.pagopa.bpd.ms.award_period.api</groupId>
     <artifactId>bpd-ms-award-period-api-rest</artifactId>
-    <version>CEN-157-rc1</version>
+    <version>CEN-157-rc3</version>
 
 </project>
