@@ -44,7 +44,7 @@ variables:
   ${{ if eq(variables.isDEV, true) }}:
     environment: 'DEV'
     dockerRegistryServiceConnection: '$(DEV_CONTAINER_REGISTRY_SERVICE_CONN)'
-    kubernetesServiceConnection: '$(UAT_KUBERNETES_SERVICE_CONN)'
+    kubernetesServiceConnection: '$(DEV_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(DEV_CONTAINER_REGISTRY)'
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
