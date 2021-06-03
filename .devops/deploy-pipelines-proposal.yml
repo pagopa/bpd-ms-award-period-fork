@@ -45,21 +45,21 @@ variables:
     environment: 'DEV'
     dockerRegistryServiceConnection: '$(DEV_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(DEV_KUBERNETES_SERVICE_CONN)'
-    containerRegistry: '$(DEV_CONTAINER_REGISTRY)'
+    containerRegistry: '$(DEV_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
   ${{ if eq(variables.isUAT, true) }}:
     environment: 'UAT'
     dockerRegistryServiceConnection: '$(UAT_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(UAT_KUBERNETES_SERVICE_CONN)'
-    containerRegistry: '$(UAT_CONTAINER_REGISTRY)'
+    containerRegistry: '$(UAT_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
   ${{ if eq(variables.isPROD, true) }}:
     environment: 'PROD'
     dockerRegistryServiceConnection: '$(PROD_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(PROD_KUBERNETES_SERVICE_CONN)'
-    containerRegistry: '$(PROD_CONTAINER_REGISTRY)'
+    containerRegistry: '$(PROD_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-prod
     selfHostedAgentPool: $(PROD_AGENT_POOL)
 
