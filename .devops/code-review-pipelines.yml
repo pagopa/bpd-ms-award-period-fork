@@ -37,7 +37,7 @@ steps:
     displayName: Build and Test
     inputs:
       mavenPomFile: 'pom.xml'
-      goals: 'test'
+      goals: 'package'
 #      options: '-Dsonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)\CCReport43F6D5EF\jacoco.xml'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
