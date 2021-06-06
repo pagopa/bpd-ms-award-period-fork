@@ -145,7 +145,7 @@ stages:
                 latest
                 $(pomversion)
           - task: PublishPipelineArtifact@1
-            displayName: 'Publish Atrifact manifests'
+            displayName: 'Publish Artifact manifests'
             condition: and(succeeded(), eq(variables.isToDeploy, true))
             inputs:
               targetPath: '$(Build.Repository.LocalPath)/manifests'
@@ -162,7 +162,7 @@ stages:
       - deployment: 'Deploy_to_${{ variables.environment }}'
         displayName: 'Deploy_to_${{ variables.environment }}'
         pool:
-          vmImage: $(selfHostedAgentPool)
+          name: $(selfHostedAgentPool)
         environment: '$(environment)'
         strategy:
           runOnce:
