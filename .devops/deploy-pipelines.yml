@@ -155,8 +155,6 @@ stages:
     jobs:
       - deployment: 'Deploy_to_${{ variables.environment }}'
         displayName: 'Deploy_to_${{ variables.environment }}'
-        dependsOn: Build
-        condition: and(succeeded(), eq(variables.isToDeploy, true))
         pool:
           vmImage: $(selfHostedAgentPool)
         environment: '$(environment)'
