@@ -36,7 +36,7 @@ variables:
   imagePullSecret: '$(K8S_IMAGE_PULL_SECRET_NAME)'
   deployNamespace: '$(DEPLOY_NAMESPACE)'
   # settingsXmlRWsecureFileName: '$(SETTINGS_XML_RW_SECURE_FILE_NAME)'
-  settingsXmlROsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
+  # settingsXmlROsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')))]
   #isDEV: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/st')]
@@ -52,6 +52,7 @@ variables:
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
     mavenGoal: 'package'
+    settingsXmlsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
   ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/release/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
   # ${{ if eq(variables.isUAT, true) }}:
     environment: 'UAT'
@@ -61,6 +62,7 @@ variables:
     deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
     mavenGoal: 'package'
+    settingsXmlsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
   # ${{ if eq(variables.isPROD, true) }}:
     environment: 'PROD'
@@ -70,6 +72,7 @@ variables:
     deployment: deployment-prod
     selfHostedAgentPool: $(PROD_AGENT_POOL)
     mavenGoal: 'deploy'
+    settingsXmlsecureFileName: '$(SETTINGS_XML_RW_SECURE_FILE_NAME)'
 
 stages:
   - stage: Release
@@ -85,7 +88,7 @@ stages:
             displayName: 'download settings.xml for Maven'
             name: settingsxml
             inputs:
-              secureFile: '$(settingsXmlROsecureFileName)'
+              secureFile: '$(settingsXmlsecureFileName)'
               retryCount: '2'
           - task: Bash@3
             displayName: Get POM version
@@ -114,7 +117,7 @@ stages:
             displayName: 'download settings.xml for Maven'
             name: settingsxml
             inputs:
-              secureFile: '$(settingsXmlROsecureFileName)'
+              secureFile: '$(settingsXmlsecureFileName)'
               retryCount: '2'
           - task: Maven@3
             inputs:
