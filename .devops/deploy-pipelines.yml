@@ -47,7 +47,7 @@ variables:
   # ${{ if eq(variables.isDEV, true) }}:
     environment: 'DEV'
     dockerRegistryServiceConnection: '$(DEV_CONTAINER_REGISTRY_SERVICE_CONN)'
-    kubernetesServiceConnection: $(DEV_KUBERNETES_SERVICE_CONN)
+    k8sServiceConnection: '$(DEV_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(DEV_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
@@ -55,7 +55,7 @@ variables:
   # ${{ if eq(variables.isUAT, true) }}:
     environment: 'UAT'
     dockerRegistryServiceConnection: '$(UAT_CONTAINER_REGISTRY_SERVICE_CONN)'
-    kubernetesServiceConnection: $(UAT_KUBERNETES_SERVICE_CONN)
+    k8sServiceConnection: '$(UAT_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(UAT_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
@@ -63,7 +63,7 @@ variables:
   # ${{ if eq(variables.isPROD, true) }}:
     environment: 'PROD'
     dockerRegistryServiceConnection: '$(PROD_CONTAINER_REGISTRY_SERVICE_CONN)'
-    kubernetesServiceConnection: $(PROD_KUBERNETES_SERVICE_CONN)
+    k8sServiceConnection: '$(PROD_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(PROD_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-prod
     selfHostedAgentPool: $(PROD_AGENT_POOL)
@@ -173,7 +173,7 @@ stages:
                   inputs:
                     action: deploy
                     rolloutStatusTimeout: 120
-                    kubernetesServiceConnection: $(kubernetesServiceConnection)
+                    kubernetesServiceConnection: $(k8sServiceConnection)
                     namespace: '$(deployNamespace)'
                     manifests: |
                       $(Pipeline.Workspace)/manifests/$(deployment).yml
