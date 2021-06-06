@@ -18,6 +18,8 @@ trigger:
       - integration/*
       - pom.xml
 
+pr: none
+
 resources:
   - repo: self
 
@@ -33,29 +35,32 @@ variables:
   imageRepository: '$(K8S_IMAGE_REPOSITORY_NAME)'
   imagePullSecret: '$(K8S_IMAGE_PULL_SECRET_NAME)'
   deployNamespace: '$(DEPLOY_NAMESPACE)'
-  settingsXmlRWsecureFileName: '$(SETTINGS_XML_RW_SECURE_FILE_NAME)'
+  # settingsXmlRWsecureFileName: '$(SETTINGS_XML_RW_SECURE_FILE_NAME)'
   settingsXmlROsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')))]
-  isDEV: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/st')]
-  isUAT: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/release/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix'))]
-  isPROD: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  #isDEV: $[eq(variables['Build.SourceBranch'], 'refs/heads/release/st')]
+  #isUAT: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/release/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix'))]
+  #isPROD: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
-  ${{ if eq(variables.isDEV, true) }}:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
+  # ${{ if eq(variables.isDEV, true) }}:
     environment: 'DEV'
     dockerRegistryServiceConnection: '$(DEV_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(DEV_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(DEV_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
-  ${{ if eq(variables.isUAT, true) }}:
+  ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/release/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
+  # ${{ if eq(variables.isUAT, true) }}:
     environment: 'UAT'
     dockerRegistryServiceConnection: '$(UAT_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(UAT_KUBERNETES_SERVICE_CONN)'
     containerRegistry: '$(UAT_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
-  ${{ if eq(variables.isPROD, true) }}:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+  # ${{ if eq(variables.isPROD, true) }}:
     environment: 'PROD'
     dockerRegistryServiceConnection: '$(PROD_CONTAINER_REGISTRY_SERVICE_CONN)'
     kubernetesServiceConnection: '$(PROD_KUBERNETES_SERVICE_CONN)'
@@ -64,8 +69,8 @@ variables:
     selfHostedAgentPool: $(PROD_AGENT_POOL)
 
 stages:
-  - stage: POM
-    displayName: POM
+  - stage: Release
+    displayName: Release
     condition: eq(variables.isToDeploy, true)
     jobs:
       - job: POM
@@ -77,7 +82,7 @@ stages:
             displayName: 'download settings.xml for Maven'
             name: settingsxml
             inputs:
-              secureFile: '$(settingsXmlRWsecureFileName)'
+              secureFile: '$(settingsXmlROsecureFileName)'
               retryCount: '2'
           - task: Bash@3
             displayName: Get POM version
@@ -90,12 +95,12 @@ stages:
                 echo "##vso[task.setvariable variable=outputpomversion;isOutput=true]$version"
               failOnStderr: true
 
-  - stage: 'Deploy_to_${{ variables.environment }}'
-    displayName: 'Deploy_to_${{ variables.environment }}'
-    dependsOn: POM
+  - stage: 'Build'
+    displayName: 'Build_and_Pusblih_to_${{ variables.environment }}'
+    dependsOn: Release
     condition: and(succeeded(), eq(variables.isToDeploy, true))
     variables:
-      pomversion: $[ stageDependencies.POM.POM.outputs['getpomversion.outputpomversion'] ]
+      pomversion: $[ stageDependencies.Release.POM.outputs['getpomversion.outputpomversion'] ]
     jobs:
       - job: Build
         displayName: Build
@@ -106,7 +111,7 @@ stages:
             displayName: 'download settings.xml for Maven'
             name: settingsxml
             inputs:
-              secureFile: '$(settingsXmlRWsecureFileName)'
+              secureFile: '$(settingsXmlROsecureFileName)'
               retryCount: '2'
           - task: Maven@3
             inputs:
@@ -121,7 +126,7 @@ stages:
               effectivePomSkip: true
               sonarQubeRunAnalysis: false
           - task: Docker@2
-            displayName: Build and push an image to container registry
+            displayName: 'Publish_image_to_${{ variables.environment }}'
             condition: succeeded()
             inputs:
               containerRegistry: '$(dockerRegistryServiceConnection)'
@@ -141,6 +146,13 @@ stages:
               artifact: 'manifests'
               publishLocation: 'pipeline'
 
+  - stage: 'Deploy'
+    displayName: 'Deploy_to_${{ variables.environment }}'
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables.isToDeploy, true))
+    variables:
+      pomversion: $[ stageDependencies.POM.POM.outputs['getpomversion.outputpomversion'] ]
+    jobs:
       - deployment: 'Deploy_to_${{ variables.environment }}'
         displayName: 'Deploy_to_${{ variables.environment }}'
         dependsOn: Build
@@ -162,6 +174,7 @@ stages:
                   displayName: Deploy to Kubernetes cluster
                   inputs:
                     action: deploy
+                    rolloutStatusTimeout: 120
                     kubernetesServiceConnection: '$(kubernetesServiceConnection)'
                     namespace: '$(deployNamespace)'
                     manifests: |
