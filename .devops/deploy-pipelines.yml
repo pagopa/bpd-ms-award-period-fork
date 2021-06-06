@@ -51,6 +51,7 @@ variables:
     containerRegistry: '$(DEV_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
+    mavenGoal: 'package'
   ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/release/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
   # ${{ if eq(variables.isUAT, true) }}:
     environment: 'UAT'
@@ -59,6 +60,7 @@ variables:
     containerRegistry: '$(UAT_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
+    mavenGoal: 'package'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
   # ${{ if eq(variables.isPROD, true) }}:
     environment: 'PROD'
@@ -67,6 +69,7 @@ variables:
     containerRegistry: '$(PROD_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-prod
     selfHostedAgentPool: $(PROD_AGENT_POOL)
+    mavenGoal: 'deploy'
 
 stages:
   - stage: Release
