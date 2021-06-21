@@ -166,7 +166,7 @@ stages:
                   inputs:
                     action: deploy
                     rolloutStatusTimeout: 120
-                    kubernetesServiceConnection: '$(kubernetesServiceConnection)'
+                    kubernetesServiceConnection: cstar-aks-dev
                     namespace: '$(deployNamespace)'
                     manifests: |
                       $(Pipeline.Workspace)/manifests/$(deployment).yml
