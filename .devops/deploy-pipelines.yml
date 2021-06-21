@@ -47,6 +47,7 @@ variables:
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
     mavenGoals: 'package'
+    settingsXmlsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
   ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/release-uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
     environment: 'UAT'
     dockerRegistryServiceConnection: '$(UAT_CONTAINER_REGISTRY_SERVICE_CONN)'
@@ -55,6 +56,7 @@ variables:
     deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
     mavenGoals: 'package'
+    settingsXmlsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
     environment: 'PROD'
     dockerRegistryServiceConnection: '$(PROD_CONTAINER_REGISTRY_SERVICE_CONN)'
@@ -63,6 +65,7 @@ variables:
     deployment: deployment-prod
     selfHostedAgentPool: $(PROD_AGENT_POOL)
     mavenGoals: 'deploy'
+    settingsXmlsecureFileName: '$(SETTINGS_XML_RW_SECURE_FILE_NAME)'
 
 stages:
   - stage: Release
@@ -78,7 +81,7 @@ stages:
             displayName: 'download settings.xml for Maven'
             name: settingsxml
             inputs:
-              secureFile: '$(settingsXmlROsecureFileName)'
+              secureFile: '$(settingsXmlsecureFileName)'
               retryCount: '2'
           - task: Bash@3
             displayName: Get POM version
@@ -107,7 +110,7 @@ stages:
             displayName: 'download settings.xml for Maven'
             name: settingsxml
             inputs:
-              secureFile: '$(settingsXmlROsecureFileName)'
+              secureFile: '$(settingsXmlsecureFileName)'
               retryCount: '2'
           - task: Maven@3
             inputs:
@@ -152,7 +155,7 @@ stages:
       - deployment: 'Deploy_to_${{ variables.environment }}'
         displayName: 'Deploy_to_${{ variables.environment }}'
         pool:
-          vmImage: $(selfHostedAgentPool)
+          name: $(selfHostedAgentPool)
         environment: '$(environment)'
         strategy:
           runOnce:
