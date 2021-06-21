@@ -7,7 +7,7 @@ trigger:
     include:
       - master
       - develop
-      - release/*
+      - release-*
       - features/*
       - hotfix/*
   paths:
@@ -151,7 +151,7 @@ stages:
     dependsOn: Build
     condition: and(succeeded(), eq(variables.isToDeploy, true))
     variables:
-      pomversion: $[ stageDependencies.POM.POM.outputs['getpomversion.outputpomversion'] ]
+      pomversion: $[ stageDependencies.Release.POM.outputs['getpomversion.outputpomversion'] ]
     jobs:
       - deployment: 'Deploy_to_${{ variables.environment }}'
         displayName: 'Deploy_to_${{ variables.environment }}'
@@ -173,7 +173,7 @@ stages:
                   inputs:
                     action: deploy
                     rolloutStatusTimeout: 120
-                    kubernetesServiceConnection: $(kubernetesServiceConnection)
+                    kubernetesServiceConnection: ${{ variables.kubernetesServiceConnection }}
                     namespace: '$(deployNamespace)'
                     manifests: |
                       $(Pipeline.Workspace)/manifests/$(deployment).yml
