@@ -32,32 +32,32 @@ variables:
   vmImageNameDefault: 'ubuntu-latest'
 
   # Image Repository Name
-  imageRepository: $(K8S_IMAGE_REPOSITORY_NAME)
-  imagePullSecret: $(K8S_IMAGE_PULL_SECRET_NAME)
-  deployNamespace: $(DEPLOY_NAMESPACE)
-  settingsXmlROsecureFileName: $(SETTINGS_XML_RO_SECURE_FILE_NAME)
+  imageRepository: '$(K8S_IMAGE_REPOSITORY_NAME)'
+  imagePullSecret: '$(K8S_IMAGE_PULL_SECRET_NAME)'
+  deployNamespace: '$(DEPLOY_NAMESPACE)'
+  settingsXmlROsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
 
   isToDeploy: $[and(ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')))]
 
-  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release-dev') }}:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release/st') }}:
     environment: 'DEV'
-    dockerRegistryServiceConnection: $(DEV_CONTAINER_REGISTRY_SERVICE_CONN)
-    kubernetesServiceConnection: $(DEV_KUBERNETES_SERVICE_CONN)
-    containerRegistry: $(DEV_CONTAINER_REGISTRY_NAME)
+    dockerRegistryServiceConnection: '$(DEV_CONTAINER_REGISTRY_SERVICE_CONN)'
+    kubernetesServiceConnection: '$(DEV_KUBERNETES_SERVICE_CONN)'
+    containerRegistry: '$(DEV_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-dev
     selfHostedAgentPool: $(DEV_AGENT_POOL)
-  ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/release-uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
+  ${{ if or(eq(variables['Build.SourceBranch'], 'refs/heads/release/uat'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix')) }}:
     environment: 'UAT'
-    dockerRegistryServiceConnection: $(UAT_CONTAINER_REGISTRY_SERVICE_CONN)
-    kubernetesServiceConnection: $(UAT_KUBERNETES_SERVICE_CONN)
-    containerRegistry: $(UAT_CONTAINER_REGISTRY_NAME)
+    dockerRegistryServiceConnection: '$(UAT_CONTAINER_REGISTRY_SERVICE_CONN)'
+    kubernetesServiceConnection: '$(UAT_KUBERNETES_SERVICE_CONN)'
+    containerRegistry: '$(UAT_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-uat
     selfHostedAgentPool: $(UAT_AGENT_POOL)
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
     environment: 'PROD'
-    dockerRegistryServiceConnection: $(PROD_CONTAINER_REGISTRY_SERVICE_CONN)
-    kubernetesServiceConnection: $(PROD_KUBERNETES_SERVICE_CONN)
-    containerRegistry: $(PROD_CONTAINER_REGISTRY_NAME)
+    dockerRegistryServiceConnection: '$(PROD_CONTAINER_REGISTRY_SERVICE_CONN)'
+    kubernetesServiceConnection: '$(PROD_KUBERNETES_SERVICE_CONN)'
+    containerRegistry: '$(PROD_CONTAINER_REGISTRY_NAME)'
     deployment: deployment-prod
     selfHostedAgentPool: $(PROD_AGENT_POOL)
 
@@ -109,7 +109,7 @@ stages:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              goals: 'package'
+              goals: 'deploy'
               options: '-B -s $(settingsxml.secureFilePath) -DskipTests=true'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.8'
