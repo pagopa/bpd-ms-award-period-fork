@@ -33,7 +33,6 @@ variables:
 
   # Image Repository Name
   imageRepository: '$(K8S_IMAGE_REPOSITORY_NAME)'
-  imagePullSecret: '$(K8S_IMAGE_PULL_SECRET_NAME)'
   deployNamespace: '$(DEPLOY_NAMESPACE)'
   settingsXmlROsecureFileName: '$(SETTINGS_XML_RO_SECURE_FILE_NAME)'
 
@@ -147,7 +146,7 @@ stages:
 
   - stage: 'Deploy'
     displayName: 'Deploy_to_${{ variables.environment }}'
-    dependsOn: [ 'Release', 'Build']
+    dependsOn: [ 'Release', 'Build' ]
     condition: and(succeeded(), eq(variables.isToDeploy, true))
     variables:
       pomversion: $[ stageDependencies.Release.POM.outputs['getpomversion.outputpomversion'] ]
@@ -177,6 +176,4 @@ stages:
                     manifests: |
                       $(Pipeline.Workspace)/manifests/$(deployment).yml
                       $(Pipeline.Workspace)/manifests/service.yml
-                    imagePullSecrets: |
-                      $(imagePullSecret)
                     containers: '$(containerRegistry)/$(imageRepository):$(pomversion)'
