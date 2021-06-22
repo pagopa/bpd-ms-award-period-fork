@@ -180,4 +180,4 @@ stages:
                     imagePullSecrets: |
                       $(imagePullSecret)
                     containers: |
-                      cstarregistry.azurecr.io/bpdmsawardperiod: $(containerRegistry)/$(imageRepository):${{ variables.pomversion }}
+                      $(containerRegistry)/$(imageRepository):$(pomversion)
