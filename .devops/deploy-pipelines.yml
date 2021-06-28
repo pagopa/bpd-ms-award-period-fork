@@ -24,8 +24,7 @@ resources:
   - repo: self
 
 variables:
-
-  dockerfileRelativePath: 'Dockerfile'
+  dockerfileRelativePath: '$(DOCKERFILE)' # DockerfileV1
 
   # Agent VM image name for Build
 
@@ -146,7 +145,7 @@ stages:
 
   - stage: 'Deploy'
     displayName: 'Deploy_to_${{ variables.environment }}'
-    dependsOn: [ 'Release', 'Build' ]
+    dependsOn: ['Release', 'Build']
     condition: and(succeeded(), eq(variables.isToDeploy, true))
     variables:
       pomversion: $[ stageDependencies.Release.POM.outputs['getpomversion.outputpomversion'] ]
