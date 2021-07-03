@@ -37,6 +37,7 @@ steps:
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
       goals: 'clean org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report org.jacoco:jacoco-maven-plugin:report-aggregate '
       options: '-Dmaven.test.failure.ignore=true'
       publishJUnitResults: true
@@ -53,6 +54,7 @@ steps:
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m $(MAVEN_OPTS)'
       goals: 'sonar:sonar'
       options: '-Dsonar.coverage.jacoco.xmlReportPaths=$(xmlReportPaths)'
       publishJUnitResults: false
