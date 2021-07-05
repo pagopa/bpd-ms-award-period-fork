@@ -9,5 +9,4 @@
     <groupId>it.gov.pagopa.bpd.ms.award_period.api</groupId>
     <artifactId>bpd-ms-award-period-api-rest</artifactId>
     <version>1.0.1</version>
-
 </project>
